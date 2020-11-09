@@ -1,0 +1,40 @@
+
+.SignUpContainer {
+    background-color: #cef260;
+    height: 60em;
+}
+
+.LandingWelcome {
+    position: relative;
+    padding-top: 5em;
+    max-width: 25em;
+    right: -55em;
+    top: 4em;
+}
+
+
+.SignupForm {
+    position: relative;
+    padding-top: 5em;
+    max-width: 30em;
+    right: -5em;
+    top: 6em;
+}
+
+.LandingText {
+    font-size: 8em;
+    margin-top: 1.5em;
+}
+
+.SignupFormCard {
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.centerTitle {
+    text-align: center;
+}
+
+.LandingTextWrapper{
+    top:5em;
+}

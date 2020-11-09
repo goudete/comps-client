@@ -1,0 +1,13 @@
+.HomeContainer {
+  background-color: #fff;
+}
+
+.title {
+  justify-content: center;
+}
+
+.content {
+  position: 'absolute';
+  left: '50%';
+  top: '50%';
+}
