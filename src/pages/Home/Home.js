@@ -8,6 +8,9 @@ import axios from 'axios';
 import {
   Row, Col, Container
 } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+import { Subscribe } from 'unstated';
+import AuthContainer from '../../containers/AuthContainer';
 
 
 class Home extends React.Component {
@@ -26,28 +29,42 @@ class Home extends React.Component {
   }
 
   render() {
+    const isLoggedIn = this.props.auth.checkAuth()
     return (
-      <Fragment>
-        <Navbaroo />
-        <div className="HomeContainer">
-          <Container>
-              <Row style={{ marginTop: '5em'}}>
-                <Col sm={6}>
-                  <h2>Your personalized list:</h2>
-                  <List
-                    places={this.state.places}
-                  />
-                </Col>
-                <Col sm={6}>
-                  <Map />
-                </Col>
-              </Row>
-              
-          </Container>
-        </div>
-      </Fragment>
+      isLoggedIn ?
+      (
+        <Fragment>
+          <Navbaroo />
+          <div className="HomeContainer">
+            <Container>
+                <Row style={{ marginTop: '5em'}}>
+                  <Col sm={6}>
+                    <h2>Your personalized list:</h2>
+                    <List
+                      places={this.state.places}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Map />
+                  </Col>
+                </Row>
+                
+            </Container>
+          </div>
+        </Fragment>
+      )
+      :
+      (
+        <Redirect to="/" />
+      )
     );
   }
 }
 
-export default Home;
+export default props => {
+  return (
+    <Subscribe to={[AuthContainer]}>
+      {(a) => <Home auth = {a}/>}
+    </Subscribe>
+  )
+}

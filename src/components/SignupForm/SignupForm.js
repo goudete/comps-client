@@ -2,25 +2,93 @@ import React from 'react';
 import { Button, Card, Elevation } from "@blueprintjs/core";
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import '../../pages/Signup/Signup.css';
+import { Subscribe } from 'unstated';
+import AuthContainer from '../../containers/AuthContainer';
+import {
+    Link,
+    Redirect
+  } from "react-router-dom";
 
 
 class SignupForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            username: null,
-            password: null
+            email: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+            loggedIn: false,
         };
 
-        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleConfPasswordChange = this.handleConfPasswordChange.bind(this);
     }
 
-    handleInputChange(event) {
-        //handle input function
+    handleEmailChange(event) {
+        this.setState({
+            email: event.target.value
+        })
     }
+    handleUsernameChange(event) {
+        this.setState({
+            username: event.target.value
+        })
+    }
+    handlePasswordChange(event) {
+        this.setState({
+            password: event.target.value
+        })
+    }
+    handleConfPasswordChange(event) {
+        this.setState({
+            confirmPassword: event.target.value
+        })
+    }
+    validateForm() {
+        if (
+            this.state.username !== '' &&
+            this.state.email !== '' &&
+            this.state.password === this.state.confirmPassword
+        ){
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    sendInfo() {
+        if (this.validateForm()){
+            this.postData();
+        } else {
+            alert('Form Invalid, please re-enter info')
+        }
+    }
+    async postData(){
+        try {
+            const loggedIn = await this.props.auth.createAuth(this.state.email, this.state.username, this.state.password)
+            if (loggedIn === true){
+                this.setState({
+                    loggedIn: true
+                })
+            }
+        }
+        catch(e){
+            alert(e);
+        }
+    }
+
+
 
     render() {
+        const isLoggedIn = this.props.auth.checkAuth()
         return (
+            this.state.loggedIn || isLoggedIn ? 
+            (<Redirect to="/home" />)
+            :
+            (
             <div>
                 <Card className="SignupFormCard" elevation={Elevation.TWO}>
                     <h3 className="centerTitle">clustr</h3>
@@ -32,7 +100,8 @@ class SignupForm extends React.Component {
                             <Input
                                 name="username"
                                 id="username"
-                                onChange={this.handleInputChange}
+                                value={this.state.username}
+                                onChange={this.handleUsernameChange}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -40,7 +109,8 @@ class SignupForm extends React.Component {
                             <Input
                                 name="email"
                                 id="email"
-                                onChange={this.handleInputChange}
+                                value={this.state.email}
+                                onChange={this.handleEmailChange}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -49,7 +119,8 @@ class SignupForm extends React.Component {
                                 name="password"
                                 id="password"
                                 type="password"
-                                onChange={this.handleInputChange}
+                                value={this.state.password}
+                                onChange={this.handlePasswordChange}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -58,15 +129,24 @@ class SignupForm extends React.Component {
                                 name="confirmPassword"
                                 id="confirmPassword"
                                 type="password"
-                                onChange={this.handleInputChange}
+                                value={this.state.confirmPassword}
+                                onChange={this.handleConfPasswordChange}
                             />
                         </FormGroup>
                     </Form>
-                    <Button active style={{ width: '100%' }}>Give me the list</Button>
+                    <Button active style={{ width: '100%' }} onClick={() => this.sendInfo()}>Give me the list</Button>
+                    <div style={{justifyContent: "center"}}>Already have an account? <Link to="/login">Login</Link> </div>
                 </Card>
             </div>
+            )
         );
     }
 }
 
-export default SignupForm;
+export default props => {
+    return (
+        <Subscribe to={[AuthContainer]}>
+            {(a) => <SignupForm auth={a} />}
+        </Subscribe>
+    )
+}

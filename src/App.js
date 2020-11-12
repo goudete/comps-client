@@ -1,4 +1,5 @@
 import React from 'react';
+import { Provider } from 'unstated';
 import "normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -17,10 +18,10 @@ import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
-    <div>
+    <Provider>
       <Router>
         <Switch>
-        <Route exact path="/">
+          <Route exact path="/">
             <Signup />
           </Route>
           <Route path="/login">
@@ -34,7 +35,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </Provider>
   );
 }
 

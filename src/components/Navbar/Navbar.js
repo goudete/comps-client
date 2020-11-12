@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Navbar, Heading, Button, Alignment } from "@blueprintjs/core";
 import { Menu, MenuDivider, MenuItem, Popover, Position, } from "@blueprintjs/core"
+import AuthContainer from '../../containers/AuthContainer';
+import { Subscribe } from 'unstated';
+
 
 
 import './Navbar.css'
@@ -25,7 +28,7 @@ class Navbaroo extends Component {
         
         <Navbar.Group align={Alignment.RIGHT}>
           <div className="userName">
-            Enrique
+            <Button text={'logout'} onClick={() => this.props.auth.logout()} />
           </div>
         </Navbar.Group>
       </Navbar>
@@ -33,4 +36,10 @@ class Navbaroo extends Component {
   }
 }
 
-export default Navbaroo;
+export default props => {
+  return (
+      <Subscribe to={[AuthContainer]}>
+          {(a) => <Navbaroo auth={a} />}
+      </Subscribe>
+  )
+}
