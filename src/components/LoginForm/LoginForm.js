@@ -14,12 +14,14 @@ class LoginForm extends React.Component {
         this.state = {
             username: null,
             password: null,
-            loggedIn: false
         };
 
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
 
+    }
+    componentDidMount() {
+        // const isLoggedIn = this.props.auth.checkAuth();
     }
 
     handleUsernameChange(event) {
@@ -53,12 +55,7 @@ class LoginForm extends React.Component {
     }
     async postData(){
         try{
-            const loggedIn = await this.props.auth.getAuth(this.state.username, this.state.password)
-            if (loggedIn === true){
-                this.setState({
-                    loggedIn: true
-                })
-            }
+            await this.props.auth.handleLogin(this.state.username, this.state.password)
         }
         catch(e){
             alert(e);
@@ -66,9 +63,9 @@ class LoginForm extends React.Component {
     }
 
     render() {
-        const isLoggedIn = this.props.auth.checkAuth();
+
         return (
-            this.state.loggedIn || isLoggedIn ?
+            this.props.auth.state.logged_in ?
             (
                 <Redirect to='/home' />
             )

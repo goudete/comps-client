@@ -68,12 +68,7 @@ class SignupForm extends React.Component {
     }
     async postData(){
         try {
-            const loggedIn = await this.props.auth.createAuth(this.state.email, this.state.username, this.state.password)
-            if (loggedIn === true){
-                this.setState({
-                    loggedIn: true
-                })
-            }
+            await this.props.auth.handleSignup(this.state.email, this.state.username, this.state.password)
         }
         catch(e){
             alert(e);
@@ -83,9 +78,9 @@ class SignupForm extends React.Component {
 
 
     render() {
-        const isLoggedIn = this.props.auth.checkAuth()
+        // const isLoggedIn = this.props.auth.checkAuth()
         return (
-            this.state.loggedIn || isLoggedIn ? 
+            this.props.auth.state.logged_in ? 
             (<Redirect to="/home" />)
             :
             (

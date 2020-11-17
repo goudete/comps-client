@@ -1,12 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import LoginForm from '../../components/LoginForm/LoginForm'
 import Navbaroo from '../../components/Navbar/Navbar';
+import AuthContainer from '../../containers/AuthContainer';
 import {
     Row, Col, Container
 } from 'react-bootstrap';
 
 
 import "./Login.css"
+import { Subscribe } from 'unstated';
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component{
     constructor(props){
@@ -36,4 +39,10 @@ class Login extends React.Component{
     }
 }
 
-export default Login;
+export default props => {
+    return (
+        <Subscribe to={[AuthContainer]}>
+            {(a) => <Login auth = {a}/>}
+        </Subscribe>
+    )
+}

@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
 import Map from '../../components/Map/Map';
 import List from '../../components/List/List';
 import Navbaroo from '../../components/Navbar/Navbar';
@@ -21,17 +19,22 @@ class Home extends React.Component {
     }
   }
   componentDidMount() {
-    axios.get(`/places`)
+    axios.get(`/places`, {
+      headers: {
+        'Authorization': `JWT ${localStorage.getItem('token')}`
+      }
+    })
       .then(res => {
         const places = res.data;
+        console.log('PLACES: ' + places)
         this.setState({ places });
       })
   }
 
   render() {
-    const isLoggedIn = this.props.auth.checkAuth()
+    // const isLoggedIn = this.props.auth.checkAuth()
     return (
-      isLoggedIn ?
+      this.props.auth.state.logged_in ?
       (
         <Fragment>
           <Navbaroo />
