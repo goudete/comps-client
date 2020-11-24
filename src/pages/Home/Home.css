@@ -11,3 +11,44 @@
   left: '50%';
   top: '50%';
 }
+
+.dualPane {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+.leftColumn {
+  z-index: 11;
+  height: 100vh;
+  position: relative;
+  width: 420px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+  background-color: #17202A;
+
+}
+
+.sideBarItemWrapper {
+  padding: 5em;
+}
+
+.sidebarItem {
+  margin: 3em;
+}
+
+.sidebarItemText {
+  font-weight: 500;
+  font-size: 2.5em;
+  color: white;
+  margin-left: .5em;
+}
+
+.icon {
+  color: white;
+}
+
+.active {
+  color: #4AA1EC;
+}
