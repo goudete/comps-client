@@ -1,0 +1,20 @@
+/* .dualPane {
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+.mainContent {
+    /* display: flex;
+    flex-wrap: wrap; */
+    margin-left: 410px; /* Same as the width of the sidebar */
+    padding: 0px 5px;
+    width: 80%;
+  }
+
+.flexItem {
+    flex: 1;
+}
+
+.drawerContainer {
+    overflow-y: auto;
+}

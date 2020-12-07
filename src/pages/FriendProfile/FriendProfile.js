@@ -9,10 +9,9 @@ import Navbaroo from '../../components/Navbar/Navbar'
 
 
 import '../../global.css';
-import './Profile.css'
 
 
-class Profile extends React.Component{
+class FriendProfile extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -31,22 +30,27 @@ class Profile extends React.Component{
     }
 
     componentDidMount() {
-      axios.get(`/follow/`, 
-      { 
-        params:
-        {
-          'user_id': this.props.auth.state.user_id
-        }
-      },
-      {
-        headers: {
-          'Authorization': `Token ${this.props.auth.state.token}`
-        }
-      })
-        .then(res => {
-          const data = res.data;
-          this.setState({ follow_data: data });
-        })
+        const arr = window.location.href.split('/')
+        console.log('HEELLLOOO')
+        const slug = arr[arr.length-1].split('?')[0]
+        console.log('SLUG: ' + slug)
+    //   axios.get(`/follow/`, 
+    //   { 
+    //     params:
+    //     {
+    //         // change this to friend's id
+    //       'user_id': this.props.auth.state.user_id
+    //     }
+    //   },
+    //   {
+    //     headers: {
+    //       'Authorization': `Token ${this.props.auth.state.token}`
+    //     }
+    //   })
+    //     .then(res => {
+    //       const data = res.data;
+    //       this.setState({ follow_data: data });
+    //     })
 
       this.props.places.getLists()
     }
@@ -102,8 +106,8 @@ class Profile extends React.Component{
               <Navbaroo />
             <div className="mainContent" style={{ marginTop: '4em'}}>
               <h1>Hello {this.props.auth.state.username && this.props.auth.state.username}</h1>
-              <h5>{this.state.follow_data && this.state.follow_data.follower_count} Followers</h5>
-              <h5>{this.state.follow_data && this.state.follow_data.following_count} Following</h5>
+              <h3>{this.state.follow_data && this.state.follow_data.follower_count} Followers</h3>
+              <h3>{this.state.follow_data && this.state.follow_data.following_count} Following</h3>
 
               <Button
                 onClick={() => this.setState({ newList: !this.state.newList})}
@@ -162,10 +166,11 @@ class Profile extends React.Component{
 
               <h3 style={{ marginTop: '2em'}}>My Lists:</h3>
               {
+                // call getLists but with friend id
                 this.props.places.state.allLists && 
                 this.props.places.state.allLists.map((l) => {
                   return (
-                    <Card className="" elevation={Elevation.TWO} onClick={() => this.clickCard(l.place)} style={{marginTop: '1em'}}>
+                    <Card elevation={Elevation.TWO} onClick={() => this.clickCard(l.place)} style={{marginTop: '1em'}}>
                       <h2>{l.name}</h2>
                       <h5>{l.description}</h5>
                     </Card>
@@ -210,7 +215,7 @@ class Profile extends React.Component{
 export default props => {
   return (
     <Subscribe to={[AuthContainer, PlacesContainer]}>
-      {(a, p) => <Profile auth = {a} places = {p} />}
+      {(a, p) => <FriendProfile auth = {a} places = {p} />}
     </Subscribe>
   )
 }

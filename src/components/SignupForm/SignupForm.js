@@ -78,9 +78,8 @@ class SignupForm extends React.Component {
 
 
     render() {
-        // const isLoggedIn = this.props.auth.checkAuth()
         return (
-            this.props.auth.state.logged_in ? 
+            this.props.auth.state.token ? 
             (<Redirect to="/home" />)
             :
             (

@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import LoginForm from '../../components/LoginForm/LoginForm'
-import Navbaroo from '../../components/Navbar/Navbar';
 import AuthContainer from '../../containers/AuthContainer';
 import {
     Row, Col, Container
@@ -19,7 +18,6 @@ class Login extends React.Component{
     render() {
         return(
             <Fragment>
-                <Navbaroo />
                 <div className="HomeContainer">
                 <Container>
                     <Row style={{ marginTop: '5em'}}>

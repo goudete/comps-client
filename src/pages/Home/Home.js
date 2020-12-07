@@ -1,142 +1,126 @@
 import React, { Component, Fragment } from 'react';
 import Map from '../../components/Map/Map';
-import List from '../../components/List/List';
-import Navbaroo from '../../components/Navbar/Navbar';
 import axios from 'axios';
-import { Icon } from '@blueprintjs/core'
-
+import { Icon, Card, Elevation, Drawer } from '@blueprintjs/core'
+import Navbaroo from '../../components/Navbar/Navbar'
 import { Redirect } from 'react-router-dom';
 import { Subscribe } from 'unstated';
 import AuthContainer from '../../containers/AuthContainer';
+import PlacesContainer from '../../containers/PlacesContainer';
 
-import './Home.css'
+
+//import './Home.css'
+import '../../global.css';
 
 
 class Home extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      places: [],
-      selected: 'home'
+      toggleDrawer: false,
+      selectedListItems: []
     }
+    this.clickCard = this.clickCard.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.findUsername = this.findUsername.bind(this);
   }
+  
   componentDidMount() {
-    axios.get(`/places`, {
-      headers: {
-        'Authorization': `JWT ${localStorage.getItem('token')}`
-      }
+    this.props.auth.getAllUsers()
+    this.props.places.getPlaces()
+    this.props.places.getAllLists()
+
+  }
+
+  clickCard(places) {
+    console.log('PLACES: ' + places)
+    // loop through places, find the matching place in allPlaces.id, return that object
+    let items = this.props.places.state.allPlaces.filter(obj => places.includes(obj.id))
+    console.log(items)
+    this.setState({
+      toggleDrawer: true,
+      selectedListItems: items
     })
-      .then(res => {
-        const places = res.data;
-        console.log('PLACES: ' + places)
-        this.setState({ places });
-      })
+  }
+  toggle() {
+    this.setState({
+      toggleDrawer: null
+    })
+  }
+  findUsername(l) {
+
+    let user = this.props.auth.state.allUsers.find(obj => {return obj.id === l.user})
+    console.log(user)
+    if(user) {
+      return user.username
+    }
   }
 
   render() {
-    // const isLoggedIn = this.props.auth.checkAuth()
+    const logged_in = this.props.auth.checkAuth();
     return (
-      this.props.auth.state.logged_in ?
+      logged_in ?
       (
-        <Fragment>
-          <div className="dualPane">
-            <div className="leftColumn">
-                <div className="sideBarItemWrapper">
-                    <div
-                    className="sidebarItem"
-                    onClick={() => {this.setState({ selected: 'home'})}}
-                    >
-                        <span className={`icon ${this.state.selected === 'home' && ' active'}`}>
-                            <Icon icon="home" iconSize={32} />
-                        </span>
-                        &nbsp;&nbsp;{' '}
-                        <span className={`sidebarItemText ${this.state.selected === 'home' && ' active'}`}>
-                            <b>Home</b>{' '}
-                        </span>{' '}
-                    </div>
-                    <div
-                    className="sidebarItem"
-                    onClick={() => {this.setState({ selected: 'lists'})}}
-                    >
-                        <span className={`icon ${this.state.selected === 'lists' && ' active'}`}>
-                            <Icon icon="document" iconSize={32} />
-                        </span>
-                        &nbsp;&nbsp;{' '}
-                        <span className={`sidebarItemText ${this.state.selected === 'lists' && ' active'}`}>
-                            <b>Lists</b>{' '}
-                        </span>
-                    </div>
-                    <div
-                    className="sidebarItem"
-                    onClick={() => {this.setState({ selected: 'explore'})}}
-                    >
-                        <span className={`icon ${this.state.selected === 'explore' && ' active'}`}>
-                            <Icon icon="path-search" iconSize={32}/>
-                        </span>
-                        &nbsp;&nbsp;{' '}
-                        <span className={`sidebarItemText ${this.state.selected === 'explore' && ' active'}`}>
-                            <b>Explore</b>{' '}
-                        </span>
-                    </div>
-                    <div
-                    className="sidebarItem"
-                    onClick={() => {this.setState({ selected: 'profile'})}}
-                    >
-                        <span className={`icon ${this.state.selected === 'profile' && ' active'}`}>
-                            <Icon icon="person" iconSize={32} />
-                        </span>
-                        &nbsp;&nbsp;{' '}
-                        <span className={`sidebarItemText ${this.state.selected === 'profile' && ' active'}`}>
-                            <b>Profile</b>{' '}
-                        </span>
-                    </div>
+      <Fragment>
+        <Navbaroo />
+        <div className="mainContent" style={{ marginTop: '4em'}}>
+          <div style={{ marginTop: '1em' }}>
+            {
+                  this.props.places.state.allUserLists && 
+                  this.props.places.state.allUserLists.map((l) => {
+
+                    return (
+                      <div className="flexItem">
+                        <Card elevation={Elevation.TWO} onClick={() => this.clickCard(l.place)} style={{marginTop: '1.5em'}}>
+                          <h2>{l.name}</h2>
+                          <h5>{l.description}</h5>
+                          
+                          <h6>By: {this.findUsername(l)}</h6>
+
+                        </Card>
+                      </div>
+                    )
+                  })
+                }
+          <Drawer
+            isOpen={this.state.toggleDrawer}
+            onClose={this.toggle}
+          >
+          
+            <div className="drawerContainer">
+                <div style={{ paddingLeft: '2em', paddingTop: '1.5em'}}>
+                  <h1>Places in List:</h1>
                 </div>
+                
+                {
+                  this.state.selectedListItems &&
+                    this.state.selectedListItems.map((obj) => {
+                      return (
+                        <div style={{ marginTop: '2em', paddingLeft: '2em'}}>
+                          <h3>{obj.name}</h3>
+                          <h6>{obj.address}</h6>
+                          <h6>{obj.instagram}</h6>
+                        </div>
+                      )
+                    })
+                }
             </div>
           
-            <div className="HomeContainer">
-
-              {this.state.selected === 'profile' ?
-                (
-                  <Map />
-                ) :
-                this.state.selected === 'lists' ?
-                (
-                  <h1>My lists</h1>
-
-                ) :
-                this.state.selected === 'explore' ?
-                (
-                  <Fragment>
-                    <h2>Your personalized list:</h2>
-                    <List
-                      places={this.state.places}
-                    />
-                  </Fragment>
-                ) :
-                (
-                  <h1>Home</h1>
-                )
-              }
-              
-
-                  
-
-            </div>
+          </Drawer>
           </div>
-        </Fragment>
-      )
-      :
-      (
-        <Redirect to="/" />
-      )
+        </div>
+      </Fragment>
+      ) :
+      (<Redirect to = "/login" />)
+
     );
   }
 }
 
 export default props => {
   return (
-    <Subscribe to={[AuthContainer]}>
-      {(a) => <Home auth = {a}/>}
+    <Subscribe to={[AuthContainer, PlacesContainer]}>
+      {(a, p) => <Home auth = {a} places = {p} />}
     </Subscribe>
   )
 }

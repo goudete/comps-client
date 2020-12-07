@@ -12,28 +12,11 @@ class LoginForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            username: null,
-            password: null,
+            username: '',
+            password: '',
         };
-
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-
-    }
-    componentDidMount() {
-        // const isLoggedIn = this.props.auth.checkAuth();
     }
 
-    handleUsernameChange(event) {
-        this.setState({
-            username: event.target.value
-        })
-    }
-    handlePasswordChange(event) {
-        this.setState({
-            password: event.target.value
-        })
-    }
     validForm(){
         if (
             this.state.username !== '' &&
@@ -65,7 +48,7 @@ class LoginForm extends React.Component {
     render() {
 
         return (
-            this.props.auth.state.logged_in ?
+            this.props.auth.state.token ?
             (
                 <Redirect to='/home' />
             )
@@ -81,7 +64,7 @@ class LoginForm extends React.Component {
                                 name="username"
                                 id="username"
                                 value={this.state.username}
-                                onChange={this.handleUsernameChange}
+                                onChange={(e) => this.setState({ username: e.target.value })}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -91,7 +74,7 @@ class LoginForm extends React.Component {
                                 id="password"
                                 type="password"
                                 value={this.state.password}
-                                onChange={this.handlePasswordChange}
+                                onChange={(e) => this.setState({ password: e.target.value })}
                             />
                         </FormGroup>
                     </Form>

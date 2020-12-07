@@ -1,0 +1,50 @@
+.dualPane {
+    display: flex;
+    height: calc(100vh - 60px);
+}
+  
+/* .leftColumn {
+    z-index: 11;
+    height: 100vh;
+    position: relative;
+    width: 410px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+    background-color: #17202A;
+} */
+.leftColumn {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 410px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #17202A;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+  }
+
+.sideBarItemWrapper {
+    padding: 5em;
+}
+
+.sidebarItem {
+    margin: 3em;
+}
+
+.sidebarItemText {
+    font-weight: 500;
+    font-size: 2.5em;
+    color: white;
+    margin-left: .5em;
+}
+
+.icon {
+    color: white;
+}
+
+.active {
+    color: #4AA1EC;
+}

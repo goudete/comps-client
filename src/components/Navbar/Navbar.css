@@ -1,16 +1,8 @@
-.Navbar {
-    height: 5em;
-}
+.navbar {
+    position: fixed;
+    margin-left: 400px;
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    width: 73%;
 
-.clustrLogo {
-    font-size: 35px;
-    margin-left: 4.5em;
-    margin-top: .5em;
-    font-weight: 600;
-}
-
-.userName {
-    font-size: 20px;
-    margin-right: 4.5em;
-    margin-top: 1em;
 }

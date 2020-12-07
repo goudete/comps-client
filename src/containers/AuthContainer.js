@@ -1,15 +1,19 @@
 import { Container } from 'unstated';
+import Cookies from 'js-cookie'
+import axios from 'axios';
 
 
 class AuthContainer extends Container {
     state = {
-        logged_in: localStorage.getItem('token') ? true : false,
-        username: ''
+        token: Cookies.get("token") || '',
+        username: Cookies.get("username") || '',
+        user_id: Cookies.get("user_id") || '',
+        allUsers: [],
+        followerInfo: []
     }
 
     async handleSignup(email, username, password) {
-        // e.preventDefault();
-        fetch('http://localhost:8000/users/', {
+        fetch('users/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -22,15 +26,18 @@ class AuthContainer extends Container {
         })
       .then(res => res.json())
       .then(json => {
-        localStorage.setItem('token', json.token);
         this.setState({
-          logged_in: true,
-          username: json.username
+          token: json.token,
+          username: json.username,
+          user_id: json.user_id
         });
+        Cookies.set("token", json.token)
+        Cookies.set("username", json.username)
+        Cookies.set("user_id", json.user_id)
       });
     }
     async handleLogin(username, password) {
-        fetch('http://localhost:8000/token-auth/', {
+        fetch('login/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -42,47 +49,53 @@ class AuthContainer extends Container {
         })
           .then(res => res.json())
           .then(json => {
-            if(json.token){
-                localStorage.setItem('token', json.token);
-                this.setState({
-                logged_in: true,
-                username: json.username
-                });
-            } else {
-                this.setState({
-                    logged_in: false,
-                    username: '',
-                })
-            }
+            this.setState({
+              token: json.token,
+              username: json.username,
+              user_id: json.user_id
+            })
+            Cookies.set("token", json.token)
+            Cookies.set("username", json.username)
+            Cookies.set("user_id", json.user_id)
             
           });
     }
-    // checkAuth() {
-    //     const logged_in = localStorage.getItem('token') ? true : false
-    //     if (logged_in) {
-    //         fetch('http://localhost:8000/current_user/', {
-    //             headers: {
-    //                 Authorization: `JWT ${localStorage.getItem('token')}`
-    //             }
-    //             })
-    //             .then(res => res.json())
-    //             .then(json => {
-    //                 if (json.username) {
-    //                     console.log(json)
-    //                     this.setState({ username: json.username });
-    //                     return true
-    //                 }
-    //             });
-    //     } else {
-    //         return false
-    //     }
-    // }
+    async getAllUsers() {
+      axios.get(`/users/`)
+          .then(res => {
+          const data = res.data;
+          this.setState({ allUsers: data });
+          })
+
+    }
+    async getFollowerInfo() {
+      axios.get(`/follow/`, {
+          params:
+      {
+        'user_id': Cookies.get("user_id")
+      }
+      })
+          .then(res => {
+          const data = res.data;
+          this.setState({ followerInfo: data });
+          })
+    }
+    checkAuth() {
+      if(this.state.username && this.state.userame != '') {
+        return true
+      } else {
+        return false
+      }
+    }
     logout() {
-        localStorage.removeItem('token');
         this.setState({
-            logged_in: false,
-            username: ''
+            token: '',
+            username: '',
+            user_id: ''
         })
+        Cookies.remove("token")
+        Cookies.remove("username")
+        Cookies.remove("user_id")
     }
 }
 

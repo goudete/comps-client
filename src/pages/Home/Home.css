@@ -12,11 +12,6 @@
   top: '50%';
 }
 
-.dualPane {
-  display: flex;
-  height: calc(100vh - 60px);
-}
-
 .leftColumn {
   z-index: 11;
   height: 100vh;
@@ -52,3 +47,4 @@
 .active {
   color: #4AA1EC;
 }
+
