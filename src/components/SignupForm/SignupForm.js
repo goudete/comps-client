@@ -85,8 +85,7 @@ class SignupForm extends React.Component {
             (
             <div>
                 <Card className="SignupFormCard" elevation={Elevation.TWO}>
-                    <h3 className="centerTitle">clustr</h3>
-                    <h6 className="centerTitle">Popups in LA, for you </h6>
+                    <h3 className="centerTitle">comps</h3>
                     
                     <Form>
                         <FormGroup>
@@ -128,7 +127,7 @@ class SignupForm extends React.Component {
                             />
                         </FormGroup>
                     </Form>
-                    <Button active style={{ width: '100%' }} onClick={() => this.sendInfo()}>Give me the list</Button>
+                    <Button active style={{ width: '100%' }} onClick={() => this.sendInfo()}>Create</Button>
                     <div style={{justifyContent: "center"}}>Already have an account? <Link to="/login">Login</Link> </div>
                 </Card>
             </div>

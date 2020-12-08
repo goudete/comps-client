@@ -17,8 +17,8 @@ class Signup extends React.Component{
                 <Container>
                     <Row>
                         <Col sm={6}>
-                            <div className="LandingTextWrapper">
-                                <h1 className="LandingText">Popups in LA</h1>
+                            <div className="LandingTextWrapper" style={{display: 'block'}}>
+                                <h1 className="LandingText">Comps</h1>
                             </div>
                         </Col> 
                         <Col sm={6}>

@@ -20,14 +20,16 @@ class Login extends React.Component{
             <Fragment>
                 <div className="HomeContainer">
                 <Container>
-                    <Row style={{ marginTop: '5em'}}>
-                        <Col sm={6}>
-                        <h2>Engaging content goes here:</h2>
-                        
+                    <Row style={{ marginTop: '10em'}}>
+                    <Col sm={11}>
+                        {/* <h2>Engaging content goes here:</h2> */}
+
                         </Col>
-                        <Col sm={6}>
+                        <Col sm={1} style={{justifyContent: 'center'}}>
                             <LoginForm />
                         </Col>
+                        
+                        
                     </Row>
                     
                 </Container>
