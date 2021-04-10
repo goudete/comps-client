@@ -1,4 +1,4 @@
-# Senior thesis project
+# Senior thesis project (frontend)
 
 ### frontend built with React
 
