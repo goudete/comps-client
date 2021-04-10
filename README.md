@@ -1,4 +1,8 @@
-## Available Scripts
+# Senior thesis project
+
+### frontend built with React
+
+#### Available Scripts
 
 Steps to run locally:
 1. Clone this repository
